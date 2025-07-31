@@ -11,5 +11,5 @@ spec:
       chart: pod2
       sourceRef:
         kind: HelmRepository
-        name: podinfo
+        name: pod2
   interval: 5m
