@@ -3,3 +3,4 @@ kind: Kustomization
 resources:
   - podinfo-repository.yaml
   - podinfo-release.yaml
+  - pod2-releases.yaml
