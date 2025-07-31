@@ -8,8 +8,8 @@ spec:
   releaseName: pod2
   chart:
     spec:
-      chart: pod2
+      chart: podinfo
       sourceRef:
         kind: HelmRepository
-        name: pod2
+        name: podinfo
   interval: 5m
