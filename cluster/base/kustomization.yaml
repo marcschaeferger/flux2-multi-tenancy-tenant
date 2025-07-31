@@ -4,3 +4,4 @@ resources:
   - ./apps/podinfo/podinfo-repository.yaml
   - ./apps/podinfo/podinfo-release.yaml
   - ./apps/pod2/pod2-releases.yaml
+  - ./apps/mysql/manifest.yaml

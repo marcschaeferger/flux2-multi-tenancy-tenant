@@ -1,0 +1,61 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: wordpress-mysql
+  labels:
+    app: wordpress-mysql
+spec:
+  ports:
+    - port: 3306
+  selector:
+    app: wordpress-mysql
+
+  clusterIP: ""
+---
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: wordpress-mysql
+  labels:
+    app: wordpress-mysql
+spec:
+  selector:
+    matchLabels:
+      app: wordpress-mysql
+  serviceName: wordpress-mysql-headless
+  template:
+    metadata:
+      labels:
+        app: wordpress-mysql
+      annotations:
+        pre.hook.backup.velero.io/command: '["/bin/bash","-c", "mysql -uroot -p$MYSQL_ROOT_PASSWORD -e \"flush tables with read lock\""]'
+        post.hook.backup.velero.io/command: '["/bin/bash","-c", "mysql -uroot -p$MYSQL_ROOT_PASSWORD -e \"unlock tables\""]'
+    spec:
+      containers:
+      - image: mysql:7.0
+        name: mysql
+        env:
+        - name: MYSQL_ROOT_PASSWORD
+          value: SuperSecret
+        - name: MYSQL_DATABASE
+          value: wordpress
+        - name: MYSQL_USER
+          value: wordpress
+        - name: MYSQL_PASSWORD
+          value: Geheim
+        ports:
+        - containerPort: 3306
+          name: mysql
+        volumeMounts:
+        - name: mysql-data
+          mountPath: /var/lib/mysql
+
+  volumeClaimTemplates:
+    - metadata:
+        name: mysql-data
+      spec:
+        accessModes:
+          - ReadWriteOnce
+        resources:
+          requests:
+            storage: 10Gi
