@@ -6,3 +6,4 @@ resources:
 patchesStrategicMerge:
   - ./apps/podinfo/podinfo-values.yaml
   - ./apps/pod2/pod2-values.yaml
+  - ./apps/mysql/manifest.yaml
